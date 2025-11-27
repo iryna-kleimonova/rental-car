@@ -9,8 +9,9 @@ export const metadata: Metadata = {
     'Browse our catalog of premium rental cars. Filter by brand, price, and mileage to find the perfect vehicle for your next trip.',
   openGraph: {
     title: 'RentalCar Catalog',
-    description: 'Premium cars available for rent with flexible mileage and price filters.',
-    url: 'https://rentalcar.example.com/catalog',
+    description:
+      'Premium cars available for rent with flexible mileage and price filters.',
+    url: 'https://rental-car-murex-kappa.vercel.app/catalog',
     type: 'website',
   },
 };
