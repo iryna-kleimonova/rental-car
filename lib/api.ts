@@ -1,13 +1,15 @@
 import axios from 'axios';
 import { Car, FilterState, CarsResponse } from '@/types';
 
-const API_BASE_URL = 'https://car-rental-api.goit.global';
 const PAGE_LIMIT = 12;
 
-const serverApi = axios.create({ baseURL: API_BASE_URL });
+const BASE_URL = process.env.API_BASE_URL?.replace(/\/$/, '');
+
+const serverApi = axios.create({ baseURL: BASE_URL });
 const clientApi = axios.create({ baseURL: '/api' });
 
-const getApiClient = () => (typeof window === 'undefined' ? serverApi : clientApi);
+const getApiClient = () =>
+  typeof window === 'undefined' ? serverApi : clientApi;
 
 const buildCarParams = (filters: FilterState, page: number) => ({
   page,
@@ -24,7 +26,9 @@ export const fetchCars = async (
 ): Promise<CarsResponse> => {
   try {
     const params = buildCarParams(filters, page);
-    const response = await getApiClient().get<CarsResponse>('/cars', { params });
+    const response = await getApiClient().get<CarsResponse>('/cars', {
+      params,
+    });
     return response.data;
   } catch (error) {
     console.error('Error fetching cars:', error);
