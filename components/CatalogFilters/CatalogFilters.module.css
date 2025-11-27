@@ -1,0 +1,121 @@
+.form {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+
+  gap: 16px;
+  margin-bottom: 56px;
+  width: 924px;
+}
+
+.label {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.33;
+  color: #8d929a;
+  margin-bottom: 8px;
+}
+
+.mileageField {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 320px;
+  flex-shrink: 0;
+}
+
+.mileageInputs {
+  display: flex;
+  position: relative;
+  height: 44px;
+}
+
+.mileageInputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 160px;
+  height: 44px;
+  background-color: #f7f7f7;
+}
+
+.mileageInputWrapper:first-child {
+  border-right: 1px solid #dadde1;
+  border-radius: 12px 0 0 12px;
+}
+
+.mileageInputWrapper:last-child {
+  border-radius: 0 12px 12px 0;
+}
+
+.mileageLabel {
+  position: absolute;
+  left: 24px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.25;
+  pointer-events: none;
+  z-index: 1;
+  margin-right: 8px;
+}
+
+.mileageInput {
+  width: 100%;
+  height: 44px;
+  border: none;
+  padding: 0 24px 0 75px;
+  background-color: transparent;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.mileageInput:focus-visible {
+  outline: none;
+}
+
+.mileageInputWrapper:focus-within {
+  outline: 2px solid #3470ff;
+  outline-offset: -2px;
+  z-index: 1;
+}
+
+.inputWrapper {
+  position: relative;
+}
+
+.submit {
+  border-radius: 12px;
+  padding: 12px 51px;
+  width: 156px;
+  height: 44px;
+
+  border: none;
+  background-color: #3470ff;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.43;
+  font-family: var(--font-manrope);
+
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.submit:hover:not(:disabled),
+.submit:focus-visible:not(:disabled) {
+  background-color: #0b44cd;
+  transform: translateY(-2px);
+}
+
+.submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: #3470ff;
+}

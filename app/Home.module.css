@@ -1,0 +1,88 @@
+.hero {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+  text-align: center;
+  background: url('/hero-2x.jpg') center/cover no-repeat;
+
+  padding-top: 436px;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
+  z-index: 1;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .heroFrame {
+    background:
+      linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+      url('/hero-2x.jpg') center/cover no-repeat;
+  }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.title {
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 1.1;
+  color: #ffffff;
+
+  margin-bottom: 16px;
+}
+
+.description {
+  font-size: 20px;
+  line-height: 1.5;
+  color: #ffffff;
+
+  margin-bottom: 40px;
+}
+
+.btnContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.button {
+  border-radius: 12px;
+  padding: 11px 88px;
+  width: 276px;
+  height: 44px;
+  background-color: #3470ff;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.25;
+  box-shadow: 0 12px 30px rgba(11, 68, 205, 0.35);
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.button:hover,
+.button:focus-visible {
+  background-color: #0b44cd;
+  transform: translateY(-2px);
+}
+
+.loaderContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  width: 100%;
+  padding: 80px 0;
+}

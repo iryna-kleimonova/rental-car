@@ -1,0 +1,264 @@
+.formCard {
+  width: 100%;
+  border: 1px solid #dadde1;
+  border-radius: 10px;
+  padding: 32px;
+  max-width: 640px;
+}
+
+.formHeader {
+  margin-bottom: 24px;
+}
+
+.formTitle {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 1.2;
+  color: #101828;
+  margin-bottom: 8px;
+}
+
+.formSubtitle {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.25;
+  color: #8d929a;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fieldWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.inputBase {
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  background-color: #f7f7f7;
+  padding: 12px 20px;
+  width: 576px;
+  height: 48px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.25;
+  color: #8d929a;
+}
+
+.inputBase::placeholder {
+  color: #8d929a;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.25;
+}
+
+.inputBase:focus-visible {
+  outline: 2px solid #3470ff;
+  outline-offset: 0;
+}
+
+.inputError {
+  outline: 2px solid #c00101;
+}
+
+.textarea {
+  min-height: 88px;
+  resize: none;
+}
+
+.calendarPopover {
+  position: absolute;
+  top: calc(100% + 20px);
+  left: 0;
+  min-width: 342px;
+  min-height: 274px;
+  border-radius: 24px;
+  border: 2px solid #3d6dff;
+  background-color: #ffffff;
+  padding: 12px;
+  z-index: 10;
+}
+
+.calendarPopover::before {
+  content: '';
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+  border-bottom: 18px solid #3d6dff;
+}
+
+.calendarPopover::after {
+  content: '';
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-bottom: 16px solid #ffffff;
+}
+
+.calendarHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.calendarControls {
+  display: flex;
+  align-items: center;
+  gap: 62px;
+}
+
+.calendarControls button {
+  border: none;
+  background: none;
+  color: #3567ff;
+  padding: 4px;
+  line-height: 1;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.navIcon {
+  width: 24px;
+  height: 24px;
+  color: currentColor;
+}
+
+.navIcon use {
+  fill: currentColor;
+}
+
+.navIconLeft {
+  transform: rotate(-90deg);
+}
+
+.navIconRight {
+  transform: rotate(90deg);
+}
+
+.calendarControls button:hover {
+  background-color: rgba(53, 103, 255, 0.12);
+}
+
+.calendarTitle {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.2;
+  color: #101828;
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: #8d929a;
+  margin-bottom: 24px;
+}
+
+.weekdays span {
+  text-align: center;
+}
+
+.calendarGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.calendarDay {
+  border: none;
+  background-color: transparent;
+  border-radius: 50%;
+  width: 36px;
+  height: 32px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.2;
+  color: #101828;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.calendarDay:hover {
+  background-color: rgba(53, 103, 255, 0.12);
+}
+
+.dayMuted {
+  color: #cbd0dc;
+}
+
+.daySelected {
+  background-color: #3470ff;
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+.dayToday {
+  box-shadow: inset 0 0 0 2px #3470ff;
+}
+
+.btnWrapper {
+  justify-content: center;
+  display: flex;
+  margin-top: 24px;
+}
+
+.submitButton {
+  border-radius: 12px;
+  padding: 12px 51px;
+  width: 156px;
+  height: 44px;
+  border: none;
+  background-color: #3470ff;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.submitButton:not(:disabled):hover,
+.submitButton:not(:disabled):focus-visible {
+  background-color: #0b44cd;
+  transform: translateY(-2px);
+}
+
+.errorText {
+  font-size: 12px;
+  color: #c00101;
+}

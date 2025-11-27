@@ -1,0 +1,58 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background with rounded corners -->
+  <rect width="512" height="512" rx="64" fill="#3470FF"/>
+  
+  <!-- Circle (radius 256px, centered) -->
+  <circle cx="256" cy="256" r="256" fill="#3470FF"/>
+  
+  <!-- Car silhouette (larger, ~80-85% of circle width = ~410px, centered) -->
+  <!-- Car positioned from ~51px to ~461px horizontally, centered vertically -->
+  <g transform="translate(51, 180)">
+    <!-- Car body - simplified sedan side view, larger -->
+    <path d="M 0 70 
+             L 20 50 
+             L 70 50 
+             L 90 30 
+             L 180 30 
+             L 200 50 
+             L 300 50 
+             L 320 70 
+             L 340 70 
+             L 340 120 
+             L 325 135 
+             L 300 135 
+             L 285 150 
+             L 180 150 
+             L 165 135 
+             L 70 135 
+             L 55 120 
+             L 0 120 Z" 
+          fill="#FFFFFF"/>
+    
+    <!-- Front wheel (larger) -->
+    <circle cx="60" cy="135" r="28" fill="#FFFFFF"/>
+    
+    <!-- Rear wheel (larger) -->
+    <circle cx="280" cy="135" r="28" fill="#FFFFFF"/>
+    
+    <!-- Front headlight (single, larger) -->
+    <circle cx="8" cy="95" r="8" fill="#FFFFFF"/>
+  </g>
+  
+  <!-- Key (much larger, ~35-40% of circle = ~180-200px, bottom right sector, slightly overlapping car) -->
+  <!-- Positioned at approximately 340-350px from left, 340-350px from top -->
+  <g transform="translate(340, 340)">
+    <!-- Key head (circular, much larger) -->
+    <circle cx="0" cy="0" r="40" fill="#FFC857"/>
+    <circle cx="0" cy="0" r="24" fill="#3470FF"/>
+    
+    <!-- Key shank (toothed tail, pointing left/up towards car, much larger) -->
+    <rect x="-100" y="-6" width="100" height="12" fill="#FFC857" rx="4"/>
+    <!-- Teeth on shank (larger and more) -->
+    <rect x="-100" y="-12" width="12" height="24" fill="#FFC857" rx="2"/>
+    <rect x="-84" y="-11" width="12" height="22" fill="#FFC857" rx="2"/>
+    <rect x="-68" y="-10" width="11" height="20" fill="#FFC857" rx="2"/>
+    <rect x="-54" y="-9" width="10" height="18" fill="#FFC857" rx="2"/>
+    <rect x="-40" y="-8" width="9" height="16" fill="#FFC857" rx="2"/>
+  </g>
+</svg>

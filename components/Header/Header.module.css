@@ -1,0 +1,35 @@
+.header {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #f2f4f7;
+  padding: 24px 0;
+  z-index: 10;
+}
+
+.header > .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navigation {
+  display: flex;
+  gap: 32px;
+}
+
+.navLink {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.25;
+  transition: color 0.3s;
+}
+
+.navLink:hover {
+  color: #0b44cd;
+}
+
+.active {
+  color: #0b44cd;
+}

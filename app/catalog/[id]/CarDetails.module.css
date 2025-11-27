@@ -1,0 +1,181 @@
+.carDetails {
+  padding: 84px 0 104px;
+  background-color: #ffffff;
+}
+
+.detailsWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 72px;
+}
+
+.mediaColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 100%;
+  max-width: 640px;
+  flex-shrink: 0;
+}
+
+.imageWrapper {
+  border-radius: 19px;
+  overflow: hidden;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.infoPanel {
+  flex: 1;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 68px;
+}
+
+.titleRow {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.carTitle {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.33;
+}
+
+.carId {
+  font-size: 14px;
+  color: #8d929a;
+  font-weight: 600;
+}
+
+.metaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.25;
+
+  margin-bottom: 8px;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.metaIcon {
+  width: 16px;
+  height: 16px;
+  color: #3470ff;
+}
+
+.price {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.33;
+  color: #3470ff;
+  margin-bottom: 24px;
+}
+
+.description {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.25;
+}
+
+.mainDesc {
+  display: flex;
+  flex-direction: column;
+  gap: 110px;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.wrapperTitle {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 1.2;
+  color: #101828;
+}
+
+.conditionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.conditionItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.25;
+  color: #101828;
+}
+
+.conditionIcon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.conditionValue {
+  color: #101828;
+}
+
+.specList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-left: 0;
+}
+
+.specItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.25;
+  color: #101828;
+}
+
+.specIcon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.loaderContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  padding: 84px 0;
+}
+
+.errorContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  padding: 84px 0;
+  text-align: center;
+  color: #b42318;
+  font-weight: 600;
+}
