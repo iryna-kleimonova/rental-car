@@ -49,7 +49,8 @@ export const fetchBrands = async (): Promise<string[]> => {
 
 export const fetchCarDetails = async (id: string): Promise<Car> => {
   try {
-    const response = await serverApi.get<Car>(`/cars/${id}`);
+    const apiClient = getApiClient();
+    const response = await apiClient.get<Car>(`/cars/${id}`);
     return response.data;
   } catch (error) {
     console.error(`Error fetching car details for ID ${id}:`, error);

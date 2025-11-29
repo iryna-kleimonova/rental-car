@@ -16,11 +16,11 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <section className={styles.hero}>
-      <div className={styles.heroContent}>
-        <h1 className={styles.title}>Find your perfect rental car</h1>
-        <p className={styles.description}>
-          Reliable and budget-friendly rentals for any journey
-        </p>
+        <div className={styles.heroContent}>
+          <h1 className={styles.title}>Find your perfect rental car</h1>
+          <p className={styles.description}>
+            Reliable and budget-friendly rentals for any journey
+          </p>
 
         <div className={styles.btnContainer}>
           <Link

@@ -84,6 +84,14 @@ export default function CatalogFilters({
     event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => {
     const { name, value } = event.target;
+    const numValue = Number(value);
+
+    if ((name === 'minMileage' || name === 'maxMileage') && value !== '') {
+      if (numValue < 0 || isNaN(numValue)) {
+        return;
+      }
+    }
+
     setFormState((prev) => ({ ...prev, [name]: value }));
   };
 

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Car } from '@/types';
 import { useFavoriteStore } from '@/store/favoriteStore';
+import { formatMileage } from '@/lib/utils';
 import styles from './CarItem.module.css';
 
 type Props = {
@@ -63,7 +64,7 @@ const CarItem = ({ item }: Props) => {
           <li>{country}</li>
           <li>{item.rentalCompany}</li>
           <li>{item.type}</li>
-          <li>{item.mileage} km</li>
+          <li>{formatMileage(item.mileage)} km</li>
         </ul>
       </div>
 

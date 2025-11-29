@@ -72,14 +72,14 @@ const CarDetailsClient = () => {
         <div className={styles.detailsWrapper}>
           <div className={styles.mediaColumn}>
             <div className={styles.imageWrapper}>
-              <Image
+            <Image
                 className={styles.image}
-                src={car.img}
+              src={car.img}
                 alt={`${car.brand} ${car.model}`}
-                width={640}
-                height={512}
+              width={640}
+              height={512}
                 priority
-              />
+            />
             </div>
             <BookingForm storageKey={`booking-form-${car.id}`} />
           </div>
@@ -108,7 +108,7 @@ const CarDetailsClient = () => {
               </div>
               <p className={styles.price}>${car.rentalPrice}</p>
               <p className={styles.description}>{car.description}</p>
-            </div>
+                </div>
             <div className={styles.mainDesc}>
               <div className={styles.wrapper}>
                 <h3 className={styles.wrapperTitle}>Rental Conditions:</h3>
@@ -137,7 +137,7 @@ const CarDetailsClient = () => {
                     </li>
                   ))}
                 </ul>
-              </div>
+                </div>
 
               <div className={styles.wrapper}>
                 <h3 className={styles.wrapperTitle}>Car Specifications:</h3>
@@ -158,7 +158,7 @@ const CarDetailsClient = () => {
                     </li>
                   ))}
                 </ul>
-              </div>
+                </div>
 
               <div className={styles.wrapper}>
                 <h3 className={styles.wrapperTitle}>

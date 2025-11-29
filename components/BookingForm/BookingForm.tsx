@@ -15,14 +15,16 @@ import styles from './BookingForm.module.css';
 type BookingFormValues = {
   name: string;
   email: string;
-  bookingDate: string;
+  startDate: string;
+  endDate: string;
   comment: string;
 };
 
 const DEFAULT_FORM_VALUES: BookingFormValues = {
   name: '',
   email: '',
-  bookingDate: '',
+  startDate: '',
+  endDate: '',
   comment: '',
 };
 
@@ -34,7 +36,7 @@ const bookingSchema = Yup.object({
   email: Yup.string()
     .email('Enter a valid email')
     .required('Email is required'),
-  bookingDate: Yup.string().required('Choose a booking date'),
+  bookingDate: Yup.string(),
   comment: Yup.string().max(500, 'Maximum 500 characters'),
 });
 
@@ -64,9 +66,9 @@ const BookingForm = ({ storageKey }: { storageKey: string }) => {
       try {
         const parsed = JSON.parse(saved) as BookingFormValues;
         schedule(() =>
-          setInitialValues({
-            ...DEFAULT_FORM_VALUES,
-            ...parsed,
+        setInitialValues({
+          ...DEFAULT_FORM_VALUES,
+          ...parsed,
           })
         );
       } catch (err) {
@@ -146,8 +148,13 @@ const BookingFormFields = ({
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const calendarRef = useRef<HTMLDivElement | null>(null);
   const bookingInputRef = useRef<HTMLInputElement | null>(null);
-  const [visibleMonth, setVisibleMonth] = useState(() =>
-    values.bookingDate ? new Date(values.bookingDate) : new Date()
+  const [selectedYear, setSelectedYear] = useState(() => new Date().getFullYear());
+  const [selectedMonth, setSelectedMonth] = useState(() => new Date().getMonth());
+  const [dateSelectionMode, setDateSelectionMode] = useState<'start' | 'end'>('start');
+  
+  const visibleMonth = useMemo(
+    () => new Date(selectedYear, selectedMonth, 1),
+    [selectedYear, selectedMonth]
   );
 
   useEffect(() => {
@@ -156,15 +163,15 @@ const BookingFormFields = ({
   }, [storageKey, values]);
 
   useEffect(() => {
-    if (!values.bookingDate) return;
-    const timer = window.setTimeout(() => {
-      setVisibleMonth(new Date(values.bookingDate));
+    const activeDate = values.startDate || values.endDate;
+    if (!activeDate) return;
+    const date = new Date(activeDate);
+    const timer = setTimeout(() => {
+      setSelectedYear(date.getFullYear());
+      setSelectedMonth(date.getMonth());
     }, 0);
-
-    return () => {
-      window.clearTimeout(timer);
-    };
-  }, [values.bookingDate]);
+    return () => clearTimeout(timer);
+  }, [values.startDate, values.endDate]);
 
   useEffect(() => {
     if (!isCalendarOpen) return;
@@ -191,18 +198,120 @@ const BookingFormFields = ({
     [visibleMonth]
   );
 
-  const formattedBookingDate = values.bookingDate
-    ? new Date(values.bookingDate).toLocaleDateString('en-US', {
+  const formatDateRange = () => {
+    if (values.startDate && values.endDate) {
+      const start = new Date(values.startDate);
+      const end = new Date(values.endDate);
+      return `${start.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+      })} - ${end.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+      })}`;
+    }
+    if (values.startDate) {
+      const start = new Date(values.startDate);
+      return `From ${start.toLocaleDateString('en-US', {
         month: 'long',
         day: 'numeric',
         year: 'numeric',
-      })
-    : '';
+      })}`;
+    }
+    return '';
+  };
+
+  const isPastDate = (date: Date) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const compareDate = new Date(date);
+    compareDate.setHours(0, 0, 0, 0);
+    return compareDate < today;
+  };
+
+  const isInRange = (date: Date) => {
+    if (!values.startDate || !values.endDate) return false;
+    const checkDate = new Date(date);
+    checkDate.setHours(0, 0, 0, 0);
+    const start = new Date(values.startDate);
+    start.setHours(0, 0, 0, 0);
+    const end = new Date(values.endDate);
+    end.setHours(0, 0, 0, 0);
+    return checkDate >= start && checkDate <= end;
+  };
 
   const handleDateSelect = (date: Date) => {
-    setFieldValue('bookingDate', date.toISOString());
-    setIsCalendarOpen(false);
+    if (isPastDate(date)) {
+      return;
+    }
+
+    const dateStr = date.toISOString();
+    const isStart = values.startDate && isSameDate(new Date(values.startDate), date);
+    const isEnd = values.endDate && isSameDate(new Date(values.endDate), date);
+
+    // Якщо клікнули на startDate, очистити обидві дати
+    if (isStart) {
+      setFieldValue('startDate', '');
+      setFieldValue('endDate', '');
+      setDateSelectionMode('start');
+      return;
+    }
+
+    // Якщо клікнули на endDate, очистити тільки endDate
+    if (isEnd) {
+      setFieldValue('endDate', '');
+      setDateSelectionMode('end');
+      return;
+    }
+
+    if (dateSelectionMode === 'start' || !values.startDate) {
+      // Якщо вибрана дата після endDate, очистити endDate
+      if (values.endDate && date > new Date(values.endDate)) {
+        setFieldValue('endDate', '');
+      }
+      setFieldValue('startDate', dateStr);
+      setDateSelectionMode('end');
+    } else {
+      // Якщо вибрана дата до startDate, встановити її як startDate
+      if (values.startDate && date < new Date(values.startDate)) {
+        setFieldValue('startDate', dateStr);
+        setFieldValue('endDate', '');
+        setDateSelectionMode('end');
+      } else if (dateStr === values.startDate) {
+        // Якщо вибрали ту саму дату, очистити
+        setFieldValue('startDate', '');
+        setFieldValue('endDate', '');
+        setDateSelectionMode('start');
+      } else {
+        setFieldValue('endDate', dateStr);
+        // Закрити календар після вибору обох дат
+        if (values.startDate) {
+          setIsCalendarOpen(false);
+        }
+      }
+    }
   };
+
+  const handleYearChange = (year: number) => {
+    const currentYear = new Date().getFullYear();
+    const minYear = currentYear;
+    const maxYear = currentYear + 9;
+    const clampedYear = Math.max(minYear, Math.min(maxYear, year));
+    setSelectedYear(clampedYear);
+  };
+
+  const handleMonthChange = (month: number) => {
+    const clampedMonth = Math.max(0, Math.min(11, month));
+    setSelectedMonth(clampedMonth);
+  };
+
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: 10 }, (_, i) => currentYear + i);
+  const months = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
 
   return (
     <Form className={styles.form}>
@@ -229,31 +338,58 @@ const BookingFormFields = ({
       />
 
       <div className={styles.fieldWrapper}>
-        <Field name="bookingDate">
+        <Field name="startDate">
           {({ field }: FieldProps) => (
             <input
               {...field}
               ref={bookingInputRef}
               readOnly
-              value={formattedBookingDate}
-              onClick={() => setIsCalendarOpen((prev) => !prev)}
-              onFocus={() => setIsCalendarOpen(true)}
+              value={formatDateRange()}
+              onClick={() => {
+                setIsCalendarOpen((prev) => !prev);
+                if (!values.startDate) {
+                  setDateSelectionMode('start');
+                } else if (!values.endDate) {
+                  setDateSelectionMode('end');
+                }
+              }}
+              onFocus={() => {
+                setIsCalendarOpen(true);
+                if (!values.startDate) {
+                  setDateSelectionMode('start');
+                } else if (!values.endDate) {
+                  setDateSelectionMode('end');
+                }
+              }}
               className={`${styles.inputBase} ${
-                errors.bookingDate && touched.bookingDate
+                (errors.startDate && touched.startDate) ||
+                (errors.endDate && touched.endDate)
                   ? styles.inputError
                   : ''
               }`}
-              placeholder="Booking date"
+              placeholder="Booking date range"
             />
           )}
         </Field>
         {isCalendarOpen && (
           <div className={styles.calendarPopover} ref={calendarRef}>
             <div className={styles.calendarHeader}>
-              <div className={styles.calendarControls}>
+              <div className={styles.calendarDateSelectors}>
                 <button
                   type="button"
-                  onClick={() => setVisibleMonth((prev) => addMonths(prev, -1))}
+                  onClick={() => {
+                    if (selectedMonth === 0) {
+                      const newYear = selectedYear - 1;
+                      if (newYear >= currentYear) {
+                        setSelectedYear(newYear);
+                        setSelectedMonth(11);
+                      }
+                    } else {
+                      setSelectedMonth(selectedMonth - 1);
+                    }
+                  }}
+                  disabled={selectedYear === currentYear && selectedMonth === 0}
+                  className={styles.navButton}
                   aria-label="Previous month"
                 >
                   <svg
@@ -263,15 +399,86 @@ const BookingFormFields = ({
                     <use href="#icon-up" />
                   </svg>
                 </button>
-                <p className={styles.calendarTitle}>
-                  {visibleMonth.toLocaleDateString('en-US', {
-                    month: 'long',
-                    year: 'numeric',
-                  })}
-                </p>
+                <select
+                  value={selectedMonth}
+                  onChange={(e) => handleMonthChange(Number(e.target.value))}
+                  className={styles.monthSelector}
+                  aria-label="Select month"
+                >
+                  {months.map((month, index) => (
+                    <option key={month} value={index}>
+                      {month}
+                    </option>
+                  ))}
+                </select>
+                <div className={styles.yearSelector}>
+                  <input
+                    type="text"
+                    value={selectedYear}
+                    readOnly
+                    className={styles.yearInput}
+                    aria-label="Selected year"
+                  />
+                  <div className={styles.yearButtons}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const newYear = selectedYear + 1;
+                        if (newYear <= currentYear + 9) {
+                          handleYearChange(newYear);
+                        }
+                      }}
+                      disabled={selectedYear >= currentYear + 9}
+                      className={styles.yearButton}
+                      aria-label="Increase year"
+                    >
+                      <svg
+                        className={styles.yearButtonIcon}
+                        viewBox="0 0 32 32"
+                        width="12"
+                        height="12"
+                      >
+                        <use href="#icon-up" />
+                      </svg>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const newYear = selectedYear - 1;
+                        if (newYear >= currentYear) {
+                          handleYearChange(newYear);
+                        }
+                      }}
+                      disabled={selectedYear <= currentYear}
+                      className={styles.yearButton}
+                      aria-label="Decrease year"
+                    >
+                      <svg
+                        className={`${styles.yearButtonIcon} ${styles.yearButtonIconDown}`}
+                        viewBox="0 0 32 32"
+                        width="12"
+                        height="12"
+                      >
+                        <use href="#icon-up" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
                 <button
                   type="button"
-                  onClick={() => setVisibleMonth((prev) => addMonths(prev, 1))}
+                  onClick={() => {
+                    if (selectedMonth === 11) {
+                      const newYear = selectedYear + 1;
+                      if (newYear <= currentYear + 9) {
+                        setSelectedYear(newYear);
+                        setSelectedMonth(0);
+                      }
+                    } else {
+                      setSelectedMonth(selectedMonth + 1);
+                    }
+                  }}
+                  disabled={selectedYear === currentYear + 9 && selectedMonth === 11}
+                  className={styles.navButton}
                   aria-label="Next month"
                 >
                   <svg
@@ -291,18 +498,24 @@ const BookingFormFields = ({
             <div className={styles.calendarGrid}>
               {calendarDays.map((day) => {
                 const isOutside = day.getMonth() !== visibleMonth.getMonth();
-                const isSelected =
-                  values.bookingDate &&
-                  isSameDate(new Date(values.bookingDate), day);
+                const isStartDate =
+                  values.startDate && isSameDate(new Date(values.startDate), day);
+                const isEndDate =
+                  values.endDate && isSameDate(new Date(values.endDate), day);
+                const isRange = isInRange(day) && !isStartDate && !isEndDate;
                 const isToday = isSameDate(new Date(), day);
+                const isPast = isPastDate(day);
 
                 return (
                   <button
                     key={day.toISOString()}
                     type="button"
+                    disabled={isPast}
                     className={`${styles.calendarDay} ${isOutside ? styles.dayMuted : ''} ${
-                      isSelected ? styles.daySelected : ''
-                    } ${isToday ? styles.dayToday : ''}`}
+                      isStartDate ? styles.dayStart : ''
+                    } ${isEndDate ? styles.dayEnd : ''} ${
+                      isRange ? styles.dayInRange : ''
+                    } ${isToday ? styles.dayToday : ''} ${isPast ? styles.dayDisabled : ''}`}
                     onClick={() => handleDateSelect(day)}
                   >
                     {day.getDate()}
@@ -310,14 +523,22 @@ const BookingFormFields = ({
                 );
               })}
             </div>
+            <div className={styles.calendarHint}>
+              {!values.startDate
+                ? 'Select start date'
+                : !values.endDate
+                ? 'Select end date'
+                : 'Click dates to change selection'}
+            </div>
           </div>
         )}
       </div>
-      <ErrorMessage
-        component="span"
-        name="bookingDate"
-        className={styles.errorText}
-      />
+      {(errors.startDate && touched.startDate) ||
+      (errors.endDate && touched.endDate) ? (
+        <span className={styles.errorText}>
+          {errors.startDate || errors.endDate}
+        </span>
+      ) : null}
 
       <FloatingField
         name="comment"
@@ -333,13 +554,13 @@ const BookingFormFields = ({
         className={styles.errorText}
       />
       <div className={styles.btnWrapper}>
-        <button
-          type="submit"
-          className={styles.submitButton}
-          disabled={isSubmitting || !isValid || !dirty}
-        >
-          {isSubmitting ? 'Sending…' : 'Send'}
-        </button>
+      <button
+        type="submit"
+        className={styles.submitButton}
+        disabled={isSubmitting || !isValid || !dirty}
+      >
+        {isSubmitting ? 'Sending…' : 'Send'}
+      </button>
       </div>
     </Form>
   );

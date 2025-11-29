@@ -21,7 +21,7 @@ export default function NotFound() {
           <h2 className={styles.subtitle}>Page Not Found</h2>
           <p className={styles.description}>
             Sorry, the page you are looking for does not exist or has been moved.
-          </p>
+      </p>
           <div className={styles.actions}>
             <Link href="/" className={styles.button}>
               Go to Home

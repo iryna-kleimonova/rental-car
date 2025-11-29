@@ -39,7 +39,7 @@ export default function Error({ error, reset }: ErrorProps) {
             </Link>
           </div>
         </div>
-      </div>
+    </div>
     </section>
   );
 }
