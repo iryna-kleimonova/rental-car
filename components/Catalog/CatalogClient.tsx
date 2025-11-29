@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useMemo } from 'react';
 import { Car, FilterState } from '@/types';
 import CatalogFilters from '@/components/CatalogFilters/CatalogFilters';
 import CarList from '@/components/CarList/CarList';
@@ -30,8 +30,12 @@ export default function CatalogClient({
   const loadMoreCars = useCatalogStore((state) => state.loadMoreCars);
   const fetchInitialCars = useCatalogStore((state) => state.fetchInitialCars);
   const hydrateCatalog = useCatalogStore((state) => state.hydrateCatalog);
-  const filters = useCatalogStore((state) => state.filters);
   const hasHydrated = useRef(false);
+
+  const showLoaderInsteadOfList = useMemo(
+    () => isLoading && cars.length === 0,
+    [isLoading, cars.length]
+  );
 
   useEffect(() => {
     if (hasHydrated.current) return;
@@ -56,8 +60,6 @@ export default function CatalogClient({
     initialPage,
     initialTotalPages,
   ]);
-
-  const showLoaderInsteadOfList = isLoading && cars.length === 0;
 
   return (
     <section className={styles.catalogSection}>

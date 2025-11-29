@@ -16,6 +16,9 @@ const nextConfig: NextConfig = {
     ],
     unoptimized: process.env.NODE_ENV === 'production',
   },
+  experimental: {
+    optimizePackageImports: ['@tanstack/react-query'],
+  },
 };
 
 export default nextConfig;

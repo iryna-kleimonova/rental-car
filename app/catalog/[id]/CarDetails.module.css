@@ -171,11 +171,63 @@
 
 .errorContainer {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 24px;
   min-height: 60vh;
   padding: 84px 0;
   text-align: center;
   color: #b42318;
   font-weight: 600;
+}
+
+.errorContainer p {
+  margin: 0;
+  font-size: 18px;
+}
+
+.retryButton {
+  padding: 12px 24px;
+  border-radius: 12px;
+  border: 2px solid #3470ff;
+  background-color: #3470ff;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.retryButton:hover {
+  background-color: #0b44cd;
+  transform: translateY(-2px);
+}
+
+.retryButton:active {
+  transform: translateY(0);
+}
+
+.formSkeleton {
+  width: 100%;
+  max-width: 640px;
+  height: 400px;
+  border-radius: 10px;
+  background: linear-gradient(
+    90deg,
+    #f7f7f7 0%,
+    #e8e8e8 50%,
+    #f7f7f7 100%
+  );
+  background-size: 200% 100%;
+  animation: loading 1.5s ease-in-out infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }

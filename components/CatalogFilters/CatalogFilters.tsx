@@ -7,6 +7,7 @@ import {
   useMemo,
   useState,
   useRef,
+  useCallback,
 } from 'react';
 import { useCatalogStore } from '@/store/catalogStore';
 import { fetchBrands } from '@/lib/api';
@@ -80,31 +81,35 @@ export default function CatalogFilters({
     };
   }, []);
 
-  const handleChange = (
-    event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
-  ) => {
-    const { name, value } = event.target;
-    const numValue = Number(value);
+  const handleChange = useCallback(
+    (event: ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
+      const { name, value } = event.target;
+      const numValue = Number(value);
 
-    if ((name === 'minMileage' || name === 'maxMileage') && value !== '') {
-      if (numValue < 0 || isNaN(numValue)) {
-        return;
+      if ((name === 'minMileage' || name === 'maxMileage') && value !== '') {
+        if (numValue < 0 || isNaN(numValue)) {
+          return;
+        }
       }
-    }
 
-    setFormState((prev) => ({ ...prev, [name]: value }));
-  };
+      setFormState((prev) => ({ ...prev, [name]: value }));
+    },
+    []
+  );
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSubmit = useCallback(
+    (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
 
-    setFilters({
-      brand: formState.brand || null,
-      rentalPrice: formState.rentalPrice || null,
-      minMileage: formState.minMileage ? Number(formState.minMileage) : null,
-      maxMileage: formState.maxMileage ? Number(formState.maxMileage) : null,
-    });
-  };
+      setFilters({
+        brand: formState.brand || null,
+        rentalPrice: formState.rentalPrice || null,
+        minMileage: formState.minMileage ? Number(formState.minMileage) : null,
+        maxMileage: formState.maxMileage ? Number(formState.maxMileage) : null,
+      });
+    },
+    [formState, setFilters]
+  );
 
   const brandDropdownOptions: DropdownOption[] = useMemo(() => {
     const sorted = [...brandOptions].sort((a, b) => a.localeCompare(b));
@@ -120,6 +125,16 @@ export default function CatalogFilters({
     []
   );
 
+  const handleBrandChange = useCallback((value: string) => {
+    setFormState((prev) => ({ ...prev, brand: value }));
+  }, []);
+
+  const handlePriceChange = useCallback((value: string) => {
+    setFormState((prev) => ({ ...prev, rentalPrice: value }));
+  }, []);
+
+  const formatPriceLabel = useCallback((label: string) => `To $${label}`, []);
+
   return (
     <form onSubmit={handleSubmit} aria-label="Filters" className={styles.form}>
       <Dropdown
@@ -129,9 +144,7 @@ export default function CatalogFilters({
         options={brandDropdownOptions}
         clearLabel="All brands"
         maxHeight={272}
-        onChange={(value) =>
-          setFormState((prev) => ({ ...prev, brand: value }))
-        }
+        onChange={handleBrandChange}
       />
 
       <Dropdown
@@ -141,10 +154,8 @@ export default function CatalogFilters({
         options={priceDropdownOptions}
         clearLabel="Any price"
         maxHeight={188}
-        formatSelectedLabel={(label) => `To $${label}`}
-        onChange={(value) =>
-          setFormState((prev) => ({ ...prev, rentalPrice: value }))
-        }
+        formatSelectedLabel={formatPriceLabel}
+        onChange={handlePriceChange}
       />
 
       <div className={styles.mileageField}>

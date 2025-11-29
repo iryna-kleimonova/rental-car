@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { memo, useMemo, useCallback } from 'react';
 import { Car } from '@/types';
 import { useFavoriteStore } from '@/store/favoriteStore';
 import { formatMileage } from '@/lib/utils';
@@ -9,26 +10,38 @@ type Props = {
   item: Car;
 };
 
-const CarItem = ({ item }: Props) => {
+const CarItem = memo(({ item }: Props) => {
   const toggleFavorite = useFavoriteStore((state) => state.toggleFavorite);
   const isFavorite = useFavoriteStore((state) => state.isFavorite(item.id));
 
-  const handleFavoriteClick = () => {
+  const handleFavoriteClick = useCallback(() => {
     toggleFavorite(item.id);
-  };
+  }, [toggleFavorite, item.id]);
 
-  const addressParts = item.address?.split(', ') ?? [];
-  const country = addressParts.slice(-1);
-  const city = addressParts.slice(1, -1);
+  const { city, country, formattedMileage, carTitle, carAlt } = useMemo(() => {
+    const addressParts = item.address?.split(', ') ?? [];
+    const countryPart = addressParts.slice(-1);
+    const cityPart = addressParts.slice(1, -1);
+    
+    return {
+      city: cityPart,
+      country: countryPart,
+      formattedMileage: formatMileage(item.mileage),
+      carTitle: `${item.brand} ${item.model}`,
+      carAlt: `${item.brand} ${item.model}`,
+    };
+  }, [item.address, item.mileage, item.brand, item.model]);
 
   return (
     <li className={styles.card}>
       <div className={styles.imageWrapper}>
         <Image
           src={item.img}
-          alt={`${item.brand} ${item.model}`}
+          alt={carAlt}
           width={274}
           height={268}
+          loading="lazy"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 274px"
         />
         <button
           type="button"
@@ -64,7 +77,7 @@ const CarItem = ({ item }: Props) => {
           <li>{country}</li>
           <li>{item.rentalCompany}</li>
           <li>{item.type}</li>
-          <li>{formatMileage(item.mileage)} km</li>
+          <li>{formattedMileage} km</li>
         </ul>
       </div>
 
@@ -73,6 +86,8 @@ const CarItem = ({ item }: Props) => {
       </Link>
     </li>
   );
-};
+});
+
+CarItem.displayName = 'CarItem';
 
 export default CarItem;
