@@ -1,0 +1,10 @@
+<svg width="640" height="512" viewBox="0 0 640 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="640" height="512" fill="#F7F7F7"/>
+  <rect x="80" y="200" width="480" height="200" rx="20" fill="#DADDE1"/>
+  <circle cx="180" cy="420" r="40" fill="#DADDE1"/>
+  <circle cx="460" cy="420" r="40" fill="#DADDE1"/>
+  <rect x="120" y="240" width="400" height="40" rx="8" fill="#CBD0DC"/>
+  <path d="M200 160 L240 200 L400 200 L440 160 Z" fill="#CBD0DC"/>
+  <text x="320" y="280" font-family="Arial, sans-serif" font-size="24" fill="#8D929A" text-anchor="middle">Car Image</text>
+</svg>
+
